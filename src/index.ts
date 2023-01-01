@@ -1,4 +1,5 @@
 import p5 from 'p5'
+const G = 0.01
 const width = 800
 const height = 800
 
@@ -35,6 +36,10 @@ let state: IState = {
     },
   ]
 }
+state = {
+  ...state,
+  planets: []
+}
 
 const drawPlanet = ({pos: {x, y}, m, s}: IPlanet) => (p: p5) => {
   p.circle(x, y, s)
@@ -56,7 +61,7 @@ const updateState = (state: IState): IState => {
   state.planets.forEach((a, i) =>
     state.planets.forEach((b, j) => {
       if (i !== j) {
-        const F = (a.m + b.m) / dist(a.pos)(b.pos)
+        const F = G*(a.m + b.m) / dist(a.pos)(b.pos)
         const Fx = F * (b.pos.x - a.pos.x) / dist(a.pos)(b.pos)
         const Fy = F * (b.pos.y - a.pos.y) / dist(a.pos)(b.pos)
         newState.planets[i].vel.x += Fx / a.m
